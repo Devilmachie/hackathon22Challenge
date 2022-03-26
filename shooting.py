@@ -69,15 +69,15 @@ def shoot_corner(gamestate,corner):
     x,y = ennemy_pos[0],ennemy_pos[1]
     
     if(corner == 'up'):
-        target_1 = np.array([0,250,0])
-        target_2 = np.array([-250,0,0])
+        target_1 = np.array([0,220,0])
+        target_2 = np.array([-220,0,0])
         if(-x>y): 
             target = target_2
         else:
             target = target_1
     else:
-        target_1 = np.array([0,-250,0])
-        target_2 = np.array([250,0,0])
+        target_1 = np.array([0,-220,0])
+        target_2 = np.array([220,0,0])
         if(-x>y):
             target = target_1
         else:
