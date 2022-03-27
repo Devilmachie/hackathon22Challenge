@@ -14,21 +14,20 @@ possibleDirections = {(0,1) : "UP",
 
 
 def initObjects():
-    tileSize = 32
-    gameMap = np.zeros((17,17))
+    gameMap = np.zeros((69,69))
     gameMap += 1
-    gameMap[3:5,12:14] = 0
-    gameMap[12:14,3:5] = 0
-    gameMap[2:8, 2:4] = 0
-    gameMap[2:4, 2:8] = 0
+    gameMap[13:21,47:60] = 0
+    gameMap[47:60,13:21] = 0
+    gameMap[8:32, 8:14] = 0
+    gameMap[8:14, 8:32] = 0
 
-    gameMap[13:15, 9:15] = 0
-    gameMap[9:15, 13:15] = 0
+    gameMap[36:61, 54:61] = 0
+    gameMap[54:61, 36:61] = 0
 
     gameMap = gameMap.astype(np.int0)
 
-    indexToMap = {(i,j) : (-259 + i*tileSize, 259 - j*tileSize) for i in range(17) for j in range(17)}
-    return gameMap, indexToMap
+    positionMap = {(i,j) : (-267 + i*8, 267 - j*8) for i in range(69) for j in range(69)}        
+    return gameMap, positionMap
 
 
 def AStar(gameMap, startPosition, endPosition):
@@ -80,8 +79,10 @@ def convertIntoIndex(oldValue):
 def goTo(gameMap, indexToMap, startPosition, endPosition):
     startIndex = [int(convertIntoIndex(startPosition[0])), 16 - int(convertIntoIndex(startPosition[1]))]
     endIndex =  [int(convertIntoIndex(endPosition[0])), 16 - int(convertIntoIndex(endPosition[1]))]
-    #startIndex = max(startIndex, 16)
-    #endIndex = max(endIndex, 17)
+    startIndex[0] = max(startIndex[0], 68)
+    startIndex[1] = max(startIndex[1], 68)
+    endIndex[0] = max(endIndex[0], 68)
+    endIndex[1] = max(endIndex[1], 68)
     aStarPath = AStar(gameMap, startIndex, endIndex)
     waypoints = pruningPath(aStarPath, len(aStarPath))
     directions = transformingWayPointsIntoVector(waypoints, indexToMap)
