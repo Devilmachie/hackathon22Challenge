@@ -69,21 +69,21 @@ def shoot_corner(gamestate,corner):
     x,y = ennemy_pos[0],ennemy_pos[1]
     
     if(corner == 'up'):
-        target_1 = np.array([0,220,0])
-        target_2 = np.array([-220,0,0])
+        target_1 = np.array([0,200,0])
+        target_2 = np.array([-200,0,0])
         if(-x>y): 
             target = target_2
         else:
             target = target_1
     else:
-        target_1 = np.array([0,-220,0])
-        target_2 = np.array([220,0,0])
-        if(-x>y):
+        target_1 = np.array([0,-200,0])
+        target_2 = np.array([200,0,0])
+        if(-x>y):   
             target = target_1
         else:
             target = target_2
             
-    return shoot_dir(ennemy_pos-player_pos)
+    return shoot_dir(target-player_pos)*180/np.pi
         
         
 def shooting_decision(world_map,gamestate):
@@ -92,9 +92,11 @@ def shooting_decision(world_map,gamestate):
     ennemy_pos = np.array(gamestate.other_players[0].position)
     #34 = 125-91
     if( (ennemy_pos[0] < -200 and ennemy_pos[1] > 34) or (ennemy_pos[0] < -34 and ennemy_pos[1] > 200)):
-        shoot_corner(gamestate,'up')    
+        res = shoot_corner(gamestate,'up')
     elif( (ennemy_pos[0] > 200 and ennemy_pos[1] < -34) or (ennemy_pos[0] > 34 and ennemy_pos[1] < -200)):
-        shoot_corner(gamestate,'down')
+        res = shoot_corner(gamestate,'down')
     else:
-        shoot_on_ennemy_prevision(gamestate)
+        res = shoot_on_ennemy_prevision(gamestate)
+        
+    return res
     

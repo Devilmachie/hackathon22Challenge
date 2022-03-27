@@ -9,6 +9,23 @@ import numpy as np
 player_dim = [32,32]
 missile_dim = [32,16]
 
+def should_evade(gamestate):
+    
+    distance_limit = 50
+    dt = 1e-5
+    
+    projectile_list = gamestate.projectiles
+    player_pos = np.array(gamestate.controlled_player.position)
+    
+    for projectile in projectile_list:
+        projectile_pos = np.array(projectile.position)
+        projectile_speed = np.array(projectile.speed)
+        if(-np.linalg.norm(player_pos-projectile_pos) + np.linalg.norm(projectile_pos+projectile_speed*dt-player_pos) < 0):
+            if(np.linalg.norm(player_pos-projectile_pos)<50):
+                return True
+    
+    return False
+
 def evade_all(board,gamestate,speed):
     
     projectile_list = gamestate.projectiles
@@ -22,7 +39,7 @@ def evade(projectile,gamestate,speed):
     sec_dist = 1e-5
     eps = 1e-6
     dt = 1e-5
-    k=5000
+    k=10000
     
     player_pos = np.array(gamestate.controlled_player.position)
     projectile_pos = np.array(projectile.position)
@@ -41,10 +58,12 @@ def evade(projectile,gamestate,speed):
         else:
             direction = np.sign(z_cross)
         
-        f_rep = k/(np.linalg.norm(projectile_pos-player_pos)+eps)
+        f_rep = k/(np.linalg.norm(projectile_pos-player_pos)**2+eps)
         
         speed -= perp_vit*f_rep*direction
     
     return speed
+    
+    
     
     
